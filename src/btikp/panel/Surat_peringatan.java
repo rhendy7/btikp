@@ -5,17 +5,24 @@
  */
 package btikp.panel;
 
+import config.Koneksi;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phantom
  */
 public class Surat_peringatan extends javax.swing.JPanel {
-
+    
+    Koneksi k = new Koneksi();
     /**
      * Creates new form Surat_peringatan
      */
     public Surat_peringatan() {
         initComponents();
+        aksiTable();
     }
 
     /**
@@ -31,12 +38,12 @@ public class Surat_peringatan extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtNomor = new javax.swing.JTextField();
+        txtTanggal = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtPeringatan = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jSimpan = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -49,13 +56,9 @@ public class Surat_peringatan extends javax.swing.JPanel {
 
         jLabel3.setText("Isi Peringatan");
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtPeringatan.setColumns(20);
+        txtPeringatan.setRows(5);
+        jScrollPane1.setViewportView(txtPeringatan);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,8 +77,8 @@ public class Surat_peringatan extends javax.swing.JPanel {
                             .addComponent(jLabel1))
                         .addGap(54, 54, 54)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2))))
+                            .addComponent(txtNomor)
+                            .addComponent(txtTanggal))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -84,11 +87,11 @@ public class Surat_peringatan extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNomor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -96,8 +99,13 @@ public class Surat_peringatan extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Simpan");
-        jPanel2.add(jButton1);
+        jSimpan.setText("Simpan");
+        jSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSimpanActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jSimpan);
 
         jButton2.setText("Ubah");
         jPanel2.add(jButton2);
@@ -146,9 +154,16 @@ public class Surat_peringatan extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSimpanActionPerformed
+        // TODO add your handling code here:
+        String Sql = "INSERT INTO r_surat_peringatan (nomor_peringatan, tanggal_peringatan, isi_peringatan)"
+                + "VALUES ('"+txtNomor.getText()+"','"+txtTanggal.getText()+"','"+txtPeringatan.getText()+"')";
+        k.simpanData(Sql);
+        aksiTable();
+    }//GEN-LAST:event_jSimpanActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -159,9 +174,33 @@ public class Surat_peringatan extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jSimpan;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtNomor;
+    private javax.swing.JTextArea txtPeringatan;
+    private javax.swing.JTextField txtTanggal;
     // End of variables declaration//GEN-END:variables
+
+    private void aksiTable() {
+        Object o[] = {"NOMOR","TANGGAL","ISI PERINGATAN"};
+        DefaultTableModel model = new DefaultTableModel(null, o);
+        jTable1.setModel(model);
+        
+        String sql = "SELECT * FROM r_surat_peringatan";
+        try {
+            Statement s = k.getConnection().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            
+            while(rs.next()){
+                String Kolom1 = rs.getString(2);
+                String Kolom2 = rs.getString(3);
+                String Kolom3 = rs.getString(4);
+                
+                String Kolom[] = {Kolom1, Kolom2, Kolom3};
+                model.addRow(Kolom);
+            }
+            model.fireTableDataChanged();
+        } catch (Exception e) {
+        }
+    }
 }

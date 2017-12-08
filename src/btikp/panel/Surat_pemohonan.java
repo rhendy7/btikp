@@ -5,17 +5,24 @@
  */
 package btikp.panel;
 
+import config.Koneksi;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phantom
  */
 public class Surat_pemohonan extends javax.swing.JPanel {
 
+    Koneksi k = new Koneksi();
     /**
      * Creates new form Surat_pemohonan
      */
     public Surat_pemohonan() {
         initComponents();
+        aksiTable();
     }
 
     /**
@@ -32,16 +39,16 @@ public class Surat_pemohonan extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtnomor = new javax.swing.JTextField();
+        txtTanggal = new javax.swing.JTextField();
+        txtLampiran = new javax.swing.JTextField();
+        txtPerihal = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtsurat = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        Jsimpan = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -56,9 +63,9 @@ public class Surat_pemohonan extends javax.swing.JPanel {
 
         jLabel5.setText("Isi Surat");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtsurat.setColumns(20);
+        txtsurat.setRows(5);
+        jScrollPane1.setViewportView(txtsurat);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,10 +78,20 @@ public class Surat_pemohonan extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
-        jButton1.setText("Simpan");
-        jPanel1.add(jButton1);
+        Jsimpan.setText("Simpan");
+        Jsimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JsimpanActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Jsimpan);
 
         jButton2.setText("Ubah");
         jPanel1.add(jButton2);
@@ -102,10 +119,10 @@ public class Surat_pemohonan extends javax.swing.JPanel {
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1))
+                            .addComponent(txtPerihal)
+                            .addComponent(txtLampiran)
+                            .addComponent(txtTanggal)
+                            .addComponent(txtnomor))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -124,32 +141,55 @@ public class Surat_pemohonan extends javax.swing.JPanel {
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtnomor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtLampiran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtPerihal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void JsimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JsimpanActionPerformed
+        // TODO add your handling code here:
+        
+        String Sql = "INSERT INTO r_surat_permohonan (nomor_permohonan, tanggal_permohonan, lampiran, perihal, isi_surat_permohonan) "
+                + "VALUES ('"+txtnomor.getText()+"','"+txtTanggal.getText()+"','"+txtLampiran.getText()+"','"+txtPerihal.getText()+"','"+txtsurat.getText()+"')";
+        k.simpanData(Sql);
+        aksiTable();
+    }//GEN-LAST:event_JsimpanActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int baris = jTable1.rowAtPoint(evt.getPoint());
+        String nomor = jTable1.getValueAt(baris, 0).toString();
+        String tanggal = jTable1.getValueAt(baris, 1).toString();
+        String lampiran = jTable1.getValueAt(baris, 2).toString();
+        String perihal = jTable1.getValueAt(baris, 3).toString();
+        
+        txtnomor.setText(nomor);
+        txtLampiran.setText(lampiran);
+        txtTanggal.setText(tanggal);
+        txtPerihal.setText(perihal);
+    }//GEN-LAST:event_jTable1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton Jsimpan;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -162,10 +202,34 @@ public class Surat_pemohonan extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField txtLampiran;
+    private javax.swing.JTextField txtPerihal;
+    private javax.swing.JTextField txtTanggal;
+    private javax.swing.JTextField txtnomor;
+    private javax.swing.JTextArea txtsurat;
     // End of variables declaration//GEN-END:variables
+
+    private void aksiTable() {
+        Object o[] = {"NOMOR","TANGGAL","LAMPIRAN","PERIHAL"};
+        DefaultTableModel model = new DefaultTableModel(null, o);
+        jTable1.setModel(model);
+        
+        String sql = "SELECT * FROM r_surat_permohonan";
+        try {
+            Statement s = k.getConnection().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            
+            while(rs.next()){
+                String Kolom1 = rs.getString(2);
+                String Kolom2 = rs.getString(3);
+                String Kolom3 = rs.getString(4);
+                String Kolom4 =rs.getString(5);
+                
+                String Kolom[] = {Kolom1, Kolom2, Kolom3, Kolom4};
+                model.addRow(Kolom);
+            }
+            model.fireTableDataChanged();
+        } catch (Exception e) {
+        }
+    }
 }

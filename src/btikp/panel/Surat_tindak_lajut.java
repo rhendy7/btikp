@@ -5,17 +5,24 @@
  */
 package btikp.panel;
 
+import config.Koneksi;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phantom
  */
 public class Surat_tindak_lajut extends javax.swing.JPanel {
 
+    Koneksi k = new Koneksi();
     /**
      * Creates new form Surat_tindak_lajut
      */
     public Surat_tindak_lajut() {
         initComponents();
+        aksiTable();
     }
 
     /**
@@ -28,44 +35,36 @@ public class Surat_tindak_lajut extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNomor = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtTanggal = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtLampiran = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtPerihal = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtPeringatan = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jSimpan = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        jTextField1.setText("jTextField1");
-
         jLabel1.setText("Nomor");
-
-        jTextField2.setText("jTextField2");
 
         jLabel2.setText("Tanggal");
 
-        jTextField3.setText("jTextField3");
-
         jLabel3.setText("Lampiran");
-
-        jTextField4.setText("jTextField4");
 
         jLabel4.setText("Perihal");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtPeringatan.setColumns(20);
+        txtPeringatan.setRows(5);
+        jScrollPane1.setViewportView(txtPeringatan);
 
         jLabel5.setText("Isi Surat");
 
@@ -83,10 +82,10 @@ public class Surat_tindak_lajut extends javax.swing.JPanel {
                     .addComponent(jLabel5))
                 .addGap(78, 78, 78)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField4)
+                    .addComponent(txtNomor)
+                    .addComponent(txtTanggal)
+                    .addComponent(txtLampiran)
+                    .addComponent(txtPerihal)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -96,18 +95,18 @@ public class Surat_tindak_lajut extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNomor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLampiran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPerihal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,8 +115,13 @@ public class Surat_tindak_lajut extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Simpan");
-        jPanel2.add(jButton1);
+        jSimpan.setText("Simpan");
+        jSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSimpanActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jSimpan);
 
         jButton2.setText("Ubah");
         jPanel2.add(jButton2);
@@ -150,10 +154,10 @@ public class Surat_tindak_lajut extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(5, 5, 5)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -169,9 +173,16 @@ public class Surat_tindak_lajut extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSimpanActionPerformed
+        // TODO add your handling code here:
+        String Sql = "INSERT INTO r_surat_tindak_lanjut (nomor_tindak_lanjut, tanggal_tindak_lanjut, lampiran_tindak_lanjut, perihal_tindak_lanjut, isi_tindak_lanjut) VALUES ('"+txtNomor.getText()+"','"+txtTanggal.getText()+"',"
+                + "'"+txtLampiran.getText()+"','"+txtPerihal.getText()+"','"+txtPeringatan.getText()+"')";
+        k.simpanData(Sql);
+        aksiTable();
+    }//GEN-LAST:event_jSimpanActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -184,11 +195,36 @@ public class Surat_tindak_lajut extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jSimpan;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField txtLampiran;
+    private javax.swing.JTextField txtNomor;
+    private javax.swing.JTextField txtPerihal;
+    private javax.swing.JTextArea txtPeringatan;
+    private javax.swing.JTextField txtTanggal;
     // End of variables declaration//GEN-END:variables
+
+    private void aksiTable() {
+        Object o[] = {"NOMOR","TANGGAL","LAMPIRAN","PERIHAL"};
+        DefaultTableModel model = new DefaultTableModel(null, o);
+        jTable1.setModel(model);
+        
+        String sql = "SELECT * FROM r_surat_tindak_lanjut";
+        try {
+            Statement s = k.getConnection().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            
+            while(rs.next()){
+                String Kolom1 = rs.getString(2);
+                String Kolom2 = rs.getString(3);
+                String Kolom3 = rs.getString(4);
+                String Kolom4 = rs.getString(5);
+                
+                String Kolom[] = {Kolom1, Kolom2, Kolom3, Kolom4};
+                model.addRow(Kolom);
+            }
+            model.fireTableDataChanged();
+        } catch (Exception e) {
+        }
+    }
 }
